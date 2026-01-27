@@ -1,4 +1,4 @@
-export const adminRoutes =   [
+export const userRoutes =   [
     {
        title: "Blog Management",
        items: [

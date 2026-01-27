@@ -1,72 +1,55 @@
+
 import * as React from "react"
-
-
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { VersionSwitcher } from "./version-switcher"
-import { SearchForm } from "./search-form"
-// import { Link } from "lucide-react"
+import { adminRoutes } from "@/routes/adminRoutes"
+import { userRoutes } from "@/routes/userRoutes"
+import Link from "next/link"
+import { Route } from "@/types"
 
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-     
-      items: [
-        {
-          title: "User Dashboard",
-          url: "/dashboard",
-        },
-        {
-          title: "Admin Dashboard",
-          url: "/admin-dashboard",
-        },
-      ],
-    },
-  
-  ],
-}
-
-// Add user prop type
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  user?: {
+  user: {
     role: string;
   };
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  let routes: Route[] = [];
+
+  switch (user.role) {
+    case "admin":
+      routes = adminRoutes;
+      break;
+    case "user":
+      routes = userRoutes;
+      break;
+    default:
+      routes = [];
+      break;
+  }
+
+  //return statement
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-        <SearchForm />
-      </SidebarHeader>
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
+        {routes.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
+                {item.items.map((subItem) => (
+                  <SidebarMenuItem key={subItem.title}>
+                    <SidebarMenuButton asChild isActive={subItem.isActive}>
+                      <Link href={subItem.url}>{subItem.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -77,31 +60,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-
-
-
-
-
-    //  <Sidebar {...props}>
-    //   <SidebarContent>
-    //     {routes.map((item) => (
-    //       <SidebarGroup key={item.title}>
-    //         <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-    //         <SidebarGroupContent>
-    //           <SidebarMenu>
-    //             {item.items.map((item) => (
-    //               <SidebarMenuItem key={item.title}>
-    //                 <SidebarMenuButton asChild>
-    //                   <Link href={item.url}>{item.title}</Link>
-    //                 </SidebarMenuButton>
-    //               </SidebarMenuItem>
-    //             ))}
-    //           </SidebarMenu>
-    //         </SidebarGroupContent>
-    //       </SidebarGroup>
-    //     ))}
-    //   </SidebarContent>
-    //   <SidebarRail />
-    // </Sidebar>
-  )
+  );
 }
