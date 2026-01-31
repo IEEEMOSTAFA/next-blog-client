@@ -30,6 +30,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // <html lang="en" suppressHydrationWarning>
+    //   <body
+    //     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    //   >
+    //     <ThemeProvider
+    //       attribute="class"
+    //       defaultTheme="system"
+    //       enableSystem
+    //       disableTransitionOnChange
+    //     >
+         
+    //       {children}
+    //       <Toaster richColors></Toaster>
+    //     </ThemeProvider>
+    //   </body>
+    // </html>
+
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -40,9 +57,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-         
           {children}
-          <Toaster richColors></Toaster>
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

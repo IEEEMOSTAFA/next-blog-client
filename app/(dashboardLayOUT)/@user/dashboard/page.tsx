@@ -1,7 +1,10 @@
+
+import { redirect } from "next/navigation";
+
+
+
 export default function UserDashboard() {
-  return (
-    <div>
-      <h1> User Dashboard </h1>
-    </div>
-  );
+
+    return redirect("/dashboard/create-blog")
+
 }
