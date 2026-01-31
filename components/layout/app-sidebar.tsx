@@ -1,5 +1,89 @@
 
+// import * as React from "react"
+// import {
+//   Sidebar,
+//   SidebarContent,
+//   SidebarGroup,
+//   SidebarGroupContent,
+//   SidebarGroupLabel,
+//   SidebarMenu,
+//   SidebarMenuButton,
+//   SidebarMenuItem,
+//   SidebarRail,
+// } from "@/components/ui/sidebar"
+// import { adminRoutes } from "@/routes/adminRoutes"
+// import { userRoutes } from "@/routes/userRoutes"
+// import Link from "next/link"
+// import { Route } from "@/types"
+
+// type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+//   user: {
+//     role: string;
+//   };
+// };
+
+// export function AppSidebar({ user, ...props }: AppSidebarProps) {
+//   let routes: Route[] = [];
+
+//   switch (user.role) {
+//     case "admin":
+//       routes = adminRoutes;
+//       break;
+//     case "user":
+//       routes = userRoutes;
+//       break;
+//     default:
+//       routes = [];
+//       break;
+//   }
+
+//   //return statement
+//   return (
+//     <Sidebar {...props}>
+//       <SidebarContent>
+//         {routes.map((item) => (
+//           <SidebarGroup key={item.title}>
+//             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+//             <SidebarGroupContent>
+//               <SidebarMenu>
+//                 {item.items.map((subItem) => (
+//                   <SidebarMenuItem key={subItem.title}>
+//                     <SidebarMenuButton asChild isActive={subItem.isActive}>
+//                       <Link href={subItem.url}>{subItem.title}</Link>
+//                     </SidebarMenuButton>
+//                   </SidebarMenuItem>
+//                 ))}
+//               </SidebarMenu>
+//             </SidebarGroupContent>
+//           </SidebarGroup>
+//         ))}
+//       </SidebarContent>
+//       <SidebarRail />
+//     </Sidebar>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"use client"; // Add this at the top
+
 import * as React from "react"
+import { usePathname } from "next/navigation"; // Add this import
 import {
   Sidebar,
   SidebarContent,
@@ -23,6 +107,8 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 };
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  const pathname = usePathname(); // Get current path
+  
   let routes: Route[] = [];
 
   switch (user.role) {
@@ -37,7 +123,6 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       break;
   }
 
-  //return statement
   return (
     <Sidebar {...props}>
       <SidebarContent>
@@ -46,13 +131,18 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((subItem) => (
-                  <SidebarMenuItem key={subItem.title}>
-                    <SidebarMenuButton asChild isActive={subItem.isActive}>
-                      <Link href={subItem.url}>{subItem.title}</Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {item.items.map((subItem) => {
+                  // Calculate if this route is active
+                  const isActive = pathname === subItem.url || pathname.startsWith(subItem.url + '/');
+                  
+                  return (
+                    <SidebarMenuItem key={subItem.title}>
+                      <SidebarMenuButton asChild isActive={isActive}>
+                        <Link href={subItem.url}>{subItem.title}</Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
