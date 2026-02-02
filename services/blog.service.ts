@@ -8,7 +8,8 @@ const API_URL = env.API_URL;
 
 interface GetBlogsParams {
     isFeatured?: boolean;
-    search?: string
+    search?: string;
+    page?:string
 }
 
 interface ServiceOptions {
@@ -50,6 +51,7 @@ export const blogService = {
             if (options?.revalidate) {
                 config.next = { revalidate: options.revalidate };
             }
+            config.next = {...config.next, tags: ["blogPosts"]};
             const res = await fetch(url.toString(), config);
             const data = await res.json();
 
